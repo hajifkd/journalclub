@@ -1,0 +1,151 @@
+<!doctype html>
+ 
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    
+    <title>Journal Club</title>
+    
+    <script src='https://cdn.jsdelivr.net/vue/1.0.24/vue.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js'></script>
+
+    <script src='js/main.js'></script>
+    
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+    
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>
+    
+    <script src='js/vue-strap.min.js'></script>
+    <script>
+      var vm = new Vue({
+          components: {
+              alert: VueStrap.alert
+          },
+          el: "#app",
+          data: {
+              showRight: false,
+              showTop: false
+          }
+      });
+    </script>
+    
+    <style>
+      [v-cloak] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body style='padding-top: 50px;'>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <span class="navbar-brand">Journal Club</a>
+        </div>
+        <!--
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Top</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>-->
+      </div>
+    </nav>
+    
+
+    <div class="container-fluid" style='padding-top: 10px'>
+      <div id="app" class='row-fluid'>
+        <div id='talks' class='col-xs-12 col-sm-6' v-cloak>
+          <h3>Talks</h3>
+          <div class='form-group'>
+          <label> <input type='checkbox' v-model='futureOnly'/>　Future talks only </label>
+          <button class="btn btn-primary pull-right" v-on:click='adding=true'> Register a new talk </button>
+          </div>
+          
+          <talk-view v-for="talk in talks" v-if='!futureOnly || talk.date > new Date()' :talk.sync="talk">
+          </talk-view>
+          
+          <edit-dialog
+            :show.sync="adding"
+            :talk.sync="editingTalk"
+            :finish="finishEditing"
+            title="Registering...">
+          </edit-dialog>
+        </div>
+        <div id='speakers' class='col-xs-4 col-sm-offset-1' v-cloak>
+          <h3>Speakers</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>E-mail address</th>
+              </tr>
+            </thead>
+            <tbody v-for='speaker in speakers'>
+              <tr>
+                <td>{{speaker.name}}</td>
+                <td>{{speaker.email}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <script id="talk-view" type="x-template">
+      <div>
+        <div class='panel panel-info'>
+          <div class='panel-heading' v-on:click='edit' style='cursor: pointer;'>
+            {{talk.title}} - {{talk.user}}
+          </div>
+          <div class='panel-body'>
+            <div>{{{talk.abstract|newline}}}</div>
+          </div>
+          <div class='panel-footer'>
+            {{talk.date.toLocaleString()}}
+          </div>
+        </div>
+        <edit-dialog :show.sync="showModal" :talk.sync="eTalk" :finish="finishEditing">
+        </edit-dialog>
+      </div>
+    </script>
+    
+    <script id="edit-dialog" type="x-template">
+      <modal :show.sync="show" :callback="preFinish" effect="fade">
+        <div slot="modal-header" class="modal-header">
+          <h4 class="modal-title">{{title}}</h4>
+        </div>
+        <div slot="modal-body" class="modal-body">
+          <div class='form-group'>
+            <label for='title'>Title</label>
+            <input v-model='talk.title' class='form-control' name='title'/>
+          </div>
+          <div class='form-group'>
+            <label for='abs'>Abstract</label>
+            <textarea v-model='talk.abstract' class='form-control' name='abs' rows='5'>
+            </textarea>
+          </div>
+          <div class='form-group'>
+            <label>Date</label>
+            <datepicker
+              :value.sync="date"
+              format="yyyy-MM-dd">
+            </datepicker>
+          </div>
+          
+        </div>
+      </modal>
+    </script>
+  </body>
+</html>
