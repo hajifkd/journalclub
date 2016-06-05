@@ -188,7 +188,8 @@ $(() => {
               return;
             }
             
-            this.talks.unshift(this.editingTalk);
+            this.talks.push(this.editingTalk);
+            this.talks.sort((a, b) => b.date - a.date);
             this.editingTalk = newTalk();
             this.adding = false;
           },
