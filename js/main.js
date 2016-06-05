@@ -14,6 +14,7 @@ function escapeHtml(content) {
 
 function newTalk() {
   return {
+    id: '000000000000',
     title: '',
     abstract: '',
     date: new Date(),
