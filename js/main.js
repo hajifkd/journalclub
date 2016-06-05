@@ -22,6 +22,24 @@ function newTalk() {
 }
 
 $(() => {
+  
+  // init speakers
+  let speakers = new Vue({
+    el: '#speakers',
+    data: {
+      speakers: []
+    },
+    created() {
+      $.getJSON('http://member.ipmu.jp/hajime.fukuda/bar/users').then(
+        data => {
+          if (!data.success) return;
+          this.speakers = data.users;
+        }
+      )
+    }
+  });
+  
+  // init talks
   Vue.filter('newline', value => value ? escapeHtml(value).replace(/\n/g, "<br />") : '');
   
   Vue.component('edit-dialog', {
@@ -33,24 +51,36 @@ $(() => {
       title: {
         type: String,
         default: "Editing...",
-      },
-      date: {
-        type: String,
-        default: new Date().toISOString().substring(0, 10)
+      }
+    },
+    data() {
+      return {
+        speakers: speakers.speakers,
+        date: new Date().toISOString().substring(0, 10),
+        speaker: [''],
       }
     },
     created() {
       this.$watch('talk', value => { 
         this.date = value.date.toISOString().substring(0, 10);
+        this.speaker.$set(0, value.user);
       });
+      this.$watch('speaker', value => {
+        this.talk.user = value[0];
+      })
     },
     components: {
       modal: VueStrap.modal,
       datepicker: VueStrap.datepicker,
+      vSelect: VueStrap.select,
+      vOption: VueStrap.option
     },
     methods: {
       preFinish() {
-        this.talk.date = new Date(this.date + ' 10:30:00');
+        if (this.date) 
+          this.talk.date = new Date(this.date + ' 10:30:00');
+        else
+          return;
         this.finish();
       }
     }
@@ -153,21 +183,6 @@ $(() => {
         console.log(this);
         this.adding = true;
       },
-    }
-  });
-  
-  let speakers = new Vue({
-    el: '#speakers',
-    data: {
-      speakers: []
-    },
-    created() {
-      $.getJSON('http://member.ipmu.jp/hajime.fukuda/bar/users').then(
-        data => {
-          if (!data.success) return;
-          this.speakers = data.users;
-        }
-      )
     }
   });
 });

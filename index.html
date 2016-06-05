@@ -143,7 +143,12 @@
               format="yyyy-MM-dd">
             </datepicker>
           </div>
-          
+          <div class='form-group'>
+            <label>Speaker</label>
+            <v-select :value.sync='speaker'>
+              <v-option v-for='speaker in speakers' :value="speaker.name">{{speaker.name}}</v-option>
+            </v-select>
+          </div>
         </div>
       </modal>
     </script>
