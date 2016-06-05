@@ -106,10 +106,12 @@
     <script id="talk-view" type="x-template">
       <div>
         <div class='panel panel-info'>
-          <div class='panel-heading' v-on:click='edit' style='cursor: pointer;'>
+          <div class='panel-heading'>
             {{talk.title}} - {{talk.user}}
+            <span class='glyphicon glyphicon-remove pull-right'
+              v-on:click='remove' style='cursor: pointer;'></span>
           </div>
-          <div class='panel-body'>
+          <div class='panel-body' style='cursor: pointer;' v-on:click='edit'>
             <div>{{{talk.abstract|newline}}}</div>
           </div>
           <div class='panel-footer'>
@@ -146,7 +148,7 @@
           <div class='form-group'>
             <label>Speaker</label>
             <v-select :value.sync='speaker'>
-              <v-option v-for='speaker in speakers' :value="speaker.name">{{speaker.name}}</v-option>
+              <v-option v-for='s in speakers' :value="s.name">{{s.name}}</v-option>
             </v-select>
           </div>
         </div>

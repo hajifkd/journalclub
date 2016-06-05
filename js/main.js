@@ -21,6 +21,8 @@ function newTalk() {
   };
 }
 
+var hoge;
+
 $(() => {
   
   // init speakers
@@ -55,9 +57,13 @@ $(() => {
     },
     data() {
       return {
-        speakers: speakers.speakers,
         date: new Date().toISOString().substring(0, 10),
         speaker: [''],
+      }
+    },
+    computed: {
+      speakers() {
+        return speakers.speakers;
       }
     },
     created() {
@@ -129,7 +135,15 @@ $(() => {
           },
           this.fail
         );
-      }
+      },
+      remove() {
+        $.getJSON('/hajime.fukuda/bar/deletetalk/' + this.talk.id).then(
+          data => {
+            if (!data.success) return;
+            this.$parent.talks.$remove(this.talk);
+          }
+        );
+      },
     }
   });
   
@@ -185,4 +199,5 @@ $(() => {
       },
     }
   });
+  hoge = talks;
 });
