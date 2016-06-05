@@ -190,6 +190,7 @@ $(() => {
             
             this.talks.unshift(this.editingTalk);
             this.editingTalk = newTalk();
+            this.adding = false;
           },
           this.fail
         );
