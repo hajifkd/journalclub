@@ -14,14 +14,11 @@
     <script src='js/Objectid.js'></script>
     <script src='js/main.js'></script>
     
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
     
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-    crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     
     <script src='js/vue-strap.min.js'></script>
     <script>
@@ -40,6 +37,16 @@
     <style>
       [v-cloak] {
         display: none;
+      }
+      
+      .panel-heading {
+        overflow: hidden;
+        padding-top: 20px;
+      }
+      
+      .btn-group {
+        position: relative;
+        top: -5px;
       }
     </style>
   </head>
@@ -71,7 +78,7 @@
           <h3>Talks</h3>
           <div class='form-group'>
           <label> <input type='checkbox' v-model='futureOnly'/>　Future talks only </label>
-          <button class="btn btn-primary pull-right" v-on:click='adding=true'> Register a new talk </button>
+          <button class="btn btn-primary pull-right" v-on:click='adding=true'><span class="glyphicon glyphicon-plus"></span></button>
           </div>
           
           <talk-view v-for="talk in talks" v-if='!futureOnly || talk.date > new Date()' :talk.sync="talk">
@@ -106,17 +113,22 @@
     
     <script id="talk-view" type="x-template">
       <div>
-        <div class='panel panel-info'>
+        <div class='panel panel-default'>
           <div class='panel-heading'>
             {{talk.title}} - {{talk.user}}
-            <span class='glyphicon glyphicon-remove pull-right'
-              v-on:click='remove' style='cursor: pointer;'></span>
+            <div class="btn-group btn-group-sm pull-right">
+						<button type="button" class="btn btn-danger"><span class='glyphicon glyphicon-remove pull-right'
+              v-on:click='remove'></span></button>
+					  </div>
           </div>
-          <div class='panel-body' style='cursor: pointer;' v-on:click='edit'>
+          <div class='panel-body'>
             <div>{{{talk.abstract|newline}}}</div>
           </div>
           <div class='panel-footer'>
             {{talk.date.toLocaleString()}}
+            <div class="btn-group btn-group-sm pull-right">
+						<button type="button" class="btn btn-primary" v-on:click='edit'><span class="glyphicon glyphicon-pencil"></span></button>
+					  </div>
           </div>
         </div>
         <edit-dialog :show.sync="showModal" :talk.sync="eTalk" :finish="finishEditing">
