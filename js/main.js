@@ -152,7 +152,7 @@ $(() => {
     el: '#talks',
     data: {
       adding: false,
-      futureOnly: false,
+      futureOnly: true,
       talks: [],
       editingTalk: newTalk(),
     },
