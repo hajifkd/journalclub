@@ -98,6 +98,7 @@ $(() => {
     data() {
       return {
         showModal: false,
+        askRemove: false,
         eTalk: newTalk(),
       };
     },
@@ -142,10 +143,14 @@ $(() => {
           data => {
             if (!data.success) return;
             this.$parent.talks.$remove(this.talk);
+            this.askRemove = false;
           }
         );
       },
-    }
+    },
+    components: {
+      modal: VueStrap.modal,
+    },
   });
   
   let talks = new Vue({

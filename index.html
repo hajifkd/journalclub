@@ -117,8 +117,9 @@
           <div class='panel-heading'>
             {{talk.title}} - {{talk.user}}
             <div class="btn-group btn-group-sm pull-right">
-						<button type="button" class="btn btn-danger"><span class='glyphicon glyphicon-remove pull-right'
-              v-on:click='remove'></span></button>
+						<button type="button" class="btn btn-danger"
+              v-on:click='askRemove = true;'><span class='glyphicon glyphicon-remove pull-right'>
+              </span></button>
 					  </div>
           </div>
           <div class='panel-body'>
@@ -134,6 +135,12 @@
         <edit-dialog :show.sync="showModal" :talk.sync="eTalk" :finish="finishEditing">
         </edit-dialog>
       </div>
+      <modal :show.sync="askRemove" :callback="remove" ok-text='Remove' cancel-text='Cancel' effect='fade'>
+        <div slot="modal-header" class="modal-header">
+        <h4 class="modal-title">Removing "{{talk.title}}"...</h4>
+        </div>
+        <div slot="modal-body" class="modal-body">Do you *REALLY* want to remove "{{talk.title}}"?</div>
+      </modal>
     </script>
     
     <script id="edit-dialog" type="x-template">
