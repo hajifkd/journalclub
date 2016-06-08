@@ -33,7 +33,7 @@ $(() => {
       speakers: []
     },
     created() {
-      $.getJSON('http://member.ipmu.jp/hajime.fukuda/bar/users').then(
+      $.getJSON('/hajime.fukuda/d/journal/users').then(
         data => {
           if (!data.success) return;
           this.speakers = data.users;
@@ -118,7 +118,7 @@ $(() => {
         console.log(this.eTalk);
         $.ajax({
           type: 'POST',
-          url: '/hajime.fukuda/bar/edittalk',
+          url: '/hajime.fukuda/d/journal/edittalk',
           contentType: 'application/json',
           dataType : 'JSON',
           data: JSON.stringify(this.eTalk)
@@ -139,7 +139,7 @@ $(() => {
         );
       },
       remove() {
-        $.getJSON('/hajime.fukuda/bar/deletetalk/' + this.talk.id).then(
+        $.getJSON('/hajime.fukuda/d/journal/deletetalk/' + this.talk.id).then(
           data => {
             if (!data.success) return;
             this.$parent.talks.$remove(this.talk);
@@ -162,7 +162,7 @@ $(() => {
       editingTalk: newTalk(),
     },
     created() {
-      $.getJSON('http://member.ipmu.jp/hajime.fukuda/bar/talks').then(
+      $.getJSON('/hajime.fukuda/d/journal/talks').then(
         data => {
           if (!data.success) return;
           for (let talk of data.talks) {
@@ -182,7 +182,7 @@ $(() => {
       finishEditing() {
         $.ajax({
           type: 'POST',
-          url: '/hajime.fukuda/bar/edittalk',
+          url: '/hajime.fukuda/d/journal/edittalk',
           contentType: 'application/json',
           dataType : 'JSON',
           data: JSON.stringify(this.editingTalk)
